@@ -41,7 +41,7 @@ export function initZoomDrag(canvas: HTMLElement) {
 function handleZoom(event: any) {
   if (event.ctrlKey) {
     const delta = event.deltaY * -0.01;
-    const zoomSensitivity = 0.3;
+    const zoomSensitivity = 0.5;
 
     const oldScale = scale;
     scale += delta * zoomSensitivity;

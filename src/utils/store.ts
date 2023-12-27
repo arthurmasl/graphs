@@ -1,4 +1,4 @@
-import { Node } from '../utils/types';
+import { Node, Graph } from '../utils/types';
 
-export const LIST = new Map<string, string[]>();
+export const LIST: Graph = new Map();
 export const NODES = new Map<string, Node>();

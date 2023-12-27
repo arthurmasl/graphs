@@ -4,3 +4,5 @@ export type Node = {
   current: boolean;
   visited: boolean;
 };
+
+export type Graph = Map<string, string[]>;

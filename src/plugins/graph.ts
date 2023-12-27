@@ -1,25 +1,47 @@
 import { LIST, NODES } from '../utils/store';
+import { Graph } from '../utils/types';
 import { draw } from './draw';
 
 export function createGraph() {
-  const graph = {
-    a: ['b', 'c'],
-    b: ['d'],
-    c: ['e'],
-    d: ['f'],
-    e: [],
-    f: [],
-  };
+  // const graph = {
+  //   a: ['b', 'c'],
+  //   b: ['d'],
+  //   c: ['e'],
+  //   d: ['f'],
+  //   e: [],
+  //   f: [],
+  // };
+  //
+  // for (const [name, values] of Object.entries(graph)) {
+  //   LIST.set(name, values);
+  // }
 
-  for (const [name, values] of Object.entries(graph)) {
-    LIST.set(name, values);
+  createRandomGraph(1000);
+}
+
+export async function drawGraph() {
+  // for (const node of depthFirstIterator(LIST, 'a')) {
+  //   await drawCurrent(node);
+  // }
+  // await depthFirstLoop(LIST, 'a');
+  await breathFirstLoop(LIST, '0');
+}
+
+async function breathFirstLoop(graph: Graph, source: string) {
+  const queue = [source];
+
+  while (queue.length) {
+    const current = queue.shift();
+    if (!current) break;
+    await drawCurrent(current);
+
+    for (const neighbor of graph.get(current)!) {
+      queue.push(neighbor);
+    }
   }
 }
 
-export const depthFirstIterator = (
-  graph: Map<string, string[]>,
-  source: string,
-) => ({
+export const depthFirstIterator = (graph: Graph, source: string) => ({
   [Symbol.iterator]: function* () {
     function* traverse(node: string): IterableIterator<string> {
       yield node;
@@ -33,10 +55,7 @@ export const depthFirstIterator = (
   },
 });
 
-export async function depthFirstLoop(
-  graph: Map<string, string[]>,
-  source: string,
-) {
+export async function depthFirstLoop(graph: Graph, source: string) {
   const stack = [source];
 
   while (stack.length) {
@@ -61,7 +80,7 @@ export async function drawCurrent(current: string) {
     node.current = true;
   }
 
-  return new Promise((resolve) => setTimeout(() => resolve(draw()), 300));
+  return new Promise((resolve) => setTimeout(() => resolve(draw()), 10));
 }
 
 function createRandomGraph(listLength: number) {
