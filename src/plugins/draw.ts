@@ -7,6 +7,7 @@ import {
   SIZE,
   STROKE_COLOR,
 } from '../utils/constants';
+import { getRandomNumber, isCirclesOverlap } from '../utils/utils';
 
 export function draw(ctx: CanvasRenderingContext2D) {
   ctx.fillStyle = '#ccc';
@@ -44,17 +45,45 @@ function drawEdge(ctx: CanvasRenderingContext2D, from: Node, to: Node) {
 
 export function createNodes() {
   let prevPos = { x: 0, y: 0 };
+  let firstCreated = false;
 
   for (const [item] of LIST) {
-    const pos = { x: 0, y: 0 };
-    const randomDistance = GAP / 2;
-    const randomAngle = Math.random() * 2 * Math.PI;
+    if (!firstCreated) {
+      firstCreated = true;
+      createNode(item, 0, 0);
+      continue;
+    }
 
-    pos.x = prevPos.x + randomDistance * Math.cos(randomAngle);
-    pos.y = prevPos.y + randomDistance * Math.sin(randomAngle);
+    const nodesValues = Array.from(NODES.values());
+    let attempts = 0;
 
-    prevPos = pos;
-    createNode(item, pos.x, pos.y);
+    while (attempts < 100) {
+      attempts++;
+
+      const randomDistance = getRandomNumber(GAP, GAP * 5);
+      const randomAngle = Math.random() * 2 * Math.PI;
+
+      const pos =
+        attempts < 30
+          ? {
+              // x: prevPos.x + GAP * Math.cos(randomAngle),
+              // y: prevPos.y + GAP * Math.sin(randomAngle),
+              x: prevPos.x + GAP * getRandomNumber(-1, 1),
+              y: prevPos.y + GAP * getRandomNumber(-1, 1),
+            }
+          : {
+              x: prevPos.x + randomDistance * Math.cos(randomAngle),
+              y: prevPos.y + randomDistance * Math.sin(randomAngle),
+            };
+
+      const isOverlap = nodesValues.some((pos2) => isCirclesOverlap(pos, pos2));
+
+      if (!isOverlap) {
+        prevPos = pos;
+        createNode(item, pos.x, pos.y);
+        break;
+      }
+    }
   }
 }
 
