@@ -2,13 +2,21 @@ import './utils/style.css';
 import { NODE_COLOR, STROKE_COLOR } from './utils/constants';
 import { createNodes, draw } from './plugins/draw';
 import { initZoomDrag } from './plugins/zoomDrag';
-import { createGraph } from './plugins/graph';
+import {
+  createGraph,
+  depthFirst,
+  depthFirstIterator,
+  drawCurrent,
+} from './plugins/graph';
+import { LIST } from './utils/store';
 
-let ctx: CanvasRenderingContext2D;
+export let ctx: CanvasRenderingContext2D;
 
-function init() {
+async function init() {
   const canvas = document.createElement('canvas');
-  ctx = canvas.getContext('2d', { alpha: false }) as CanvasRenderingContext2D;
+  ctx = canvas.getContext('2d', {
+    alpha: false,
+  }) as CanvasRenderingContext2D;
 
   canvas.width = window.innerWidth;
   canvas.height = window.innerHeight;
@@ -25,8 +33,12 @@ function init() {
 
   document.body.appendChild(canvas);
 
-  initZoomDrag(canvas, ctx);
-  draw(ctx);
+  initZoomDrag(canvas);
+  draw();
+
+  for (const node of depthFirstIterator(LIST, 'a')) {
+    await drawCurrent(node);
+  }
 }
 
 window.onload = init;

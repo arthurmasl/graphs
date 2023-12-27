@@ -1,3 +1,4 @@
+import { ctx } from '../main';
 import { draw } from './draw';
 
 let lastX = 0;
@@ -5,15 +6,12 @@ let lastY = 0;
 let isDragging = false;
 let scale = 1.0;
 
-export function initZoomDrag(
-  canvas: HTMLElement,
-  ctx: CanvasRenderingContext2D,
-) {
-  canvas.addEventListener('wheel', (e) => handleZoom(e, ctx), {
+export function initZoomDrag(canvas: HTMLElement) {
+  canvas.addEventListener('wheel', handleZoom, {
     passive: true,
   });
   canvas.addEventListener('mousedown', handlePanStart);
-  canvas.addEventListener('mousemove', (e) => handlePanMove(e, ctx));
+  canvas.addEventListener('mousemove', handlePanMove);
   canvas.addEventListener('mouseup', handlePanEnd);
   canvas.addEventListener('mouseleave', handlePanEnd);
 
@@ -31,7 +29,7 @@ export function initZoomDrag(
     'touchmove',
     (event: any) => {
       if (event.touches.length === 1) {
-        handlePanMove(event.touches[0], ctx);
+        handlePanMove(event.touches[0]);
       }
     },
     { passive: true },
@@ -40,7 +38,7 @@ export function initZoomDrag(
   canvas.addEventListener('touchend', handlePanEnd);
 }
 
-function handleZoom(event: any, ctx: CanvasRenderingContext2D) {
+function handleZoom(event: any) {
   if (event.ctrlKey) {
     const delta = event.deltaY * -0.01;
     const zoomSensitivity = 0.3;
@@ -50,7 +48,7 @@ function handleZoom(event: any, ctx: CanvasRenderingContext2D) {
     scale = Math.min(Math.max(0.05, scale), 1.0);
     ctx.scale(scale / oldScale, scale / oldScale);
 
-    draw(ctx);
+    draw();
   }
 }
 
@@ -60,7 +58,7 @@ function handlePanStart(event: any) {
   lastY = event.clientY;
 }
 
-function handlePanMove(event: any, ctx: CanvasRenderingContext2D) {
+function handlePanMove(event: any) {
   if (isDragging) {
     const deltaX = event.clientX - lastX;
     const deltaY = event.clientY - lastY;
@@ -69,7 +67,7 @@ function handlePanMove(event: any, ctx: CanvasRenderingContext2D) {
     lastX = event.clientX;
     lastY = event.clientY;
 
-    draw(ctx);
+    draw();
   }
 }
 

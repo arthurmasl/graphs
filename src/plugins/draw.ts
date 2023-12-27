@@ -8,8 +8,9 @@ import {
   STROKE_COLOR,
 } from '../utils/constants';
 import { getRandomNumber, isCirclesOverlap } from '../utils/utils';
+import { ctx } from '../main';
 
-export function draw(ctx: CanvasRenderingContext2D) {
+export function draw() {
   ctx.fillStyle = '#ccc';
   ctx.fillRect(-SIZE, -SIZE, SIZE * 2, SIZE * 2);
 
@@ -18,25 +19,31 @@ export function draw(ctx: CanvasRenderingContext2D) {
 
     for (const adjacency of item[1]) {
       const to = NODES.get(adjacency)!;
-      drawEdge(ctx, node, to);
+      drawEdge(node, to);
     }
-    drawNode(ctx, item[0], node);
+    drawNode(item[0], node);
   }
 }
 
-function drawNode(ctx: CanvasRenderingContext2D, name: string, node: Node) {
+function drawNode(name: string, node: Node) {
   ctx.beginPath();
   ctx.arc(node.x, node.y, RADIUS, 0, 2 * Math.PI);
-  ctx.fillStyle = NODE_COLOR;
+  if (node.current) {
+    ctx.fillStyle = '#326667';
+  } else if (node.visited && !node.current) {
+    ctx.fillStyle = '#333';
+  } else {
+    ctx.fillStyle = node.current ? '#0f0' : NODE_COLOR;
+  }
   ctx.fill();
   ctx.stroke();
 
   ctx.beginPath();
-  ctx.fillStyle = STROKE_COLOR;
+  ctx.fillStyle = node.visited ? '#fff' : STROKE_COLOR;
   ctx.fillText(name, node.x, node.y + 5);
 }
 
-function drawEdge(ctx: CanvasRenderingContext2D, from: Node, to: Node) {
+function drawEdge(from: Node, to: Node) {
   ctx.beginPath();
   ctx.moveTo(from.x, from.y);
   ctx.lineTo(to.x, to.y);
@@ -87,10 +94,18 @@ export function createNodes() {
   }
 }
 
-function createNode(name: string, x: number, y: number) {
+function createNode(
+  name: string,
+  x: number,
+  y: number,
+  current = false,
+  visited = false,
+) {
   const node = {
     x,
     y,
+    current,
+    visited,
   };
 
   NODES.set(name, node);
