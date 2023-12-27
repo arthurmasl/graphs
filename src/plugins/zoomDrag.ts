@@ -1,3 +1,5 @@
+import { draw } from './draw';
+
 let lastX = 0;
 let lastY = 0;
 let isDragging = false;
@@ -41,12 +43,14 @@ export function initZoomDrag(
 function handleZoom(event: any, ctx: CanvasRenderingContext2D) {
   if (event.ctrlKey) {
     const delta = event.deltaY * -0.01;
-    const zoomSensitivity = 0.5;
+    const zoomSensitivity = 0.3;
 
     const oldScale = scale;
     scale += delta * zoomSensitivity;
-    scale = Math.min(Math.max(0.3, scale), 1.0);
+    scale = Math.min(Math.max(0.05, scale), 1.0);
     ctx.scale(scale / oldScale, scale / oldScale);
+
+    draw(ctx);
   }
 }
 
@@ -64,6 +68,8 @@ function handlePanMove(event: any, ctx: CanvasRenderingContext2D) {
     ctx.translate(deltaX / scale, deltaY / scale);
     lastX = event.clientX;
     lastY = event.clientY;
+
+    draw(ctx);
   }
 }
 
