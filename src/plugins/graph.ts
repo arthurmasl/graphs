@@ -2,29 +2,31 @@ import { LIST, NODES } from '../utils/store';
 import { Graph } from '../utils/types';
 import { draw } from './draw';
 
-export function createGraph() {
-  // const graph = {
-  //   a: ['b', 'c'],
-  //   b: ['d'],
-  //   c: ['e'],
-  //   d: ['f'],
-  //   e: [],
-  //   f: [],
-  // };
-  //
-  // for (const [name, values] of Object.entries(graph)) {
-  //   LIST.set(name, values);
-  // }
+let startNode = 'a';
 
-  createRandomGraph(1000);
+export function createGraph() {
+  const graph = {
+    a: ['b', 'c'],
+    b: ['d'],
+    c: ['e'],
+    d: ['f'],
+    e: [],
+    f: [],
+  };
+
+  for (const [name, values] of Object.entries(graph)) {
+    LIST.set(name, values);
+  }
+
+  // createRandomGraph(100);
 }
 
 export async function drawGraph() {
-  // for (const node of depthFirstIterator(LIST, 'a')) {
-  //   await drawCurrent(node);
+  // for (const node of depthFirstIterator(LIST, startNode)) {
+  //   await drawCurrent(node, 200);
   // }
-  // await depthFirstLoop(LIST, 'a');
-  await breathFirstLoop(LIST, '0');
+  // await depthFirstLoop(LIST, startNode);
+  await breathFirstLoop(LIST, startNode);
 }
 
 async function breathFirstLoop(graph: Graph, source: string) {
@@ -69,7 +71,7 @@ export async function depthFirstLoop(graph: Graph, source: string) {
   }
 }
 
-export async function drawCurrent(current: string) {
+export async function drawCurrent(current: string, delay = 200) {
   for (const v of NODES.values()) {
     v.current = false;
   }
@@ -80,7 +82,7 @@ export async function drawCurrent(current: string) {
     node.current = true;
   }
 
-  return new Promise((resolve) => setTimeout(() => resolve(draw()), 10));
+  return new Promise((resolve) => setTimeout(() => resolve(draw()), delay));
 }
 
 function createRandomGraph(listLength: number) {
