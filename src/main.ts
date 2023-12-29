@@ -1,8 +1,7 @@
 import './utils/style.css';
 import { NODE_COLOR, STROKE_COLOR } from './utils/constants';
-import { createNodes, draw } from './plugins/draw';
 import { initZoomDrag } from './plugins/zoomDrag';
-import { createGraph, drawGraph } from './plugins/graph';
+import { hasPath } from './problems/03_hasPath';
 
 export let ctx: CanvasRenderingContext2D;
 
@@ -22,14 +21,17 @@ async function init() {
   ctx.fillStyle = NODE_COLOR;
   ctx.strokeStyle = STROKE_COLOR;
 
-  createGraph();
-  createNodes();
-
   document.body.appendChild(canvas);
 
   initZoomDrag(canvas);
-  draw();
-  await drawGraph();
+
+  const problems = [
+    // depthFirst,
+    // breathFirst,
+    hasPath,
+  ];
+
+  problems[0].init();
 }
 
 window.onload = init;

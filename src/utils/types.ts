@@ -5,4 +5,5 @@ export type Node = {
   visited: boolean;
 };
 
+export type GraphObject = Record<string, string[]>;
 export type Graph = Map<string, string[]>;

@@ -6,7 +6,7 @@ let lastY = 0;
 let isDragging = false;
 let scale = 1.0;
 
-export function initZoomDrag(canvas: HTMLElement) {
+export const initZoomDrag = (canvas: HTMLElement) => () => {
   canvas.addEventListener('wheel', handleZoom, {
     passive: true,
   });
@@ -36,7 +36,7 @@ export function initZoomDrag(canvas: HTMLElement) {
   );
 
   canvas.addEventListener('touchend', handlePanEnd);
-}
+};
 
 function handleZoom(event: any) {
   if (event.ctrlKey) {

@@ -10,7 +10,7 @@ import {
 import { getRandomNumber, isCirclesOverlap } from '../utils/utils';
 import { ctx } from '../main';
 
-export function draw() {
+export async function draw() {
   ctx.fillStyle = '#ccc';
   ctx.fillRect(-SIZE, -SIZE, SIZE * 2, SIZE * 2);
 
@@ -83,7 +83,9 @@ export function createNodes() {
               y: prevPos.y + randomDistance * Math.sin(randomAngle),
             };
 
-      const isOverlap = nodesValues.some((pos2) => isCirclesOverlap(pos, pos2));
+      const isOverlap = nodesValues.some((pos2) =>
+        isCirclesOverlap(pos as Node, pos2),
+      );
 
       if (!isOverlap) {
         prevPos = pos;
