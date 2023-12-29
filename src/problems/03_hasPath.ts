@@ -46,7 +46,6 @@ export const hasPath = {
   init: async () => {
     createGraph(graph);
     // const res = await hasPathDepth(LIST, 'f', 'k');
-    const res = await hasPathBreath(LIST, 'f', 'k');
-    console.log(res);
+    await hasPathBreath(LIST, 'f', 'k');
   },
 };

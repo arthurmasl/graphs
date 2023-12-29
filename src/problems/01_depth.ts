@@ -34,9 +34,9 @@ export async function depthFirstLoop(graph: Graph, source: string) {
 export const depthFirst = {
   init: async () => {
     createGraph();
-    // for (const node of depthFirstIterator(LIST, 'a')) {
-    //   await drawCurrent(node, 200);
-    // }
-    await depthFirstLoop(LIST, 'a');
+    for (const node of depthFirstIterator(LIST, 'a')) {
+      await drawCurrent(node, 200);
+    }
+    // await depthFirstLoop(LIST, 'a');
   },
 };

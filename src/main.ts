@@ -2,6 +2,8 @@ import './utils/style.css';
 import { NODE_COLOR, STROKE_COLOR } from './utils/constants';
 import { initZoomDrag } from './plugins/zoomDrag';
 import { hasPath } from './problems/03_hasPath';
+import { depthFirst } from './problems/01_depth';
+import { breathFirst } from './problems/02_breath';
 
 export let ctx: CanvasRenderingContext2D;
 

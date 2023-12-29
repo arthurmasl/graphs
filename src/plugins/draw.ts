@@ -46,8 +46,31 @@ function drawNode(name: string, node: Node) {
 function drawEdge(from: Node, to: Node) {
   ctx.beginPath();
   ctx.moveTo(from.x, from.y);
-  ctx.lineTo(to.x, to.y);
+
+  const dx = to.x - from.x;
+  const dy = to.y - from.y;
+  const distance = Math.sqrt(dx * dx + dy * dy);
+
+  const shortenedX = from.x + (dx / distance) * (distance - RADIUS);
+  const shortenedY = from.y + (dy / distance) * (distance - RADIUS);
+
+  ctx.lineTo(shortenedX, shortenedY);
   ctx.stroke();
+
+  // arrowhead
+  const angle = Math.atan2(to.y - shortenedY, to.x - shortenedX);
+  ctx.beginPath();
+  ctx.moveTo(shortenedX, shortenedY);
+  ctx.lineTo(
+    shortenedX - 10 * Math.cos(angle - Math.PI / 6),
+    shortenedY - 10 * Math.sin(angle - Math.PI / 6),
+  );
+  ctx.lineTo(
+    shortenedX - 10 * Math.cos(angle + Math.PI / 6),
+    shortenedY - 10 * Math.sin(angle + Math.PI / 6),
+  );
+  ctx.fillStyle = STROKE_COLOR;
+  ctx.fill();
 }
 
 export function createNodes() {
