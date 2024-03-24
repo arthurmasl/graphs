@@ -20,7 +20,7 @@ export function createGraph(graph = defaultGraph) {
   draw();
 }
 
-function createRandomGraph(listLength: number) {
+export function createRandomGraph(listLength: number) {
   for (let i = 0; i <= listLength; i++) {
     if (i === listLength) {
       LIST.set(`${i}`, []);
@@ -29,4 +29,7 @@ function createRandomGraph(listLength: number) {
 
     LIST.set(`${i}`, [`${i + 1}`]);
   }
+
+  createNodes();
+  draw();
 }

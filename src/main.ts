@@ -28,9 +28,9 @@ async function init() {
   initZoomDrag(canvas);
 
   const problems = [
-    // depthFirst,
+    depthFirst,
     // breathFirst,
-    hasPath,
+    // hasPath,
   ];
 
   problems[0].init();

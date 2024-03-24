@@ -1,4 +1,4 @@
-import { createGraph } from '../plugins/graphs/createGraph';
+import { createGraph, createRandomGraph } from '../plugins/graphs/createGraph';
 import { drawCurrent } from '../plugins/graphs/drawGraph';
 import { LIST } from '../utils/store';
 import { Graph } from '../utils/types';
@@ -33,10 +33,12 @@ export async function depthFirstLoop(graph: Graph, source: string) {
 
 export const depthFirst = {
   init: async () => {
-    createGraph();
-    for (const node of depthFirstIterator(LIST, 'a')) {
-      await drawCurrent(node, 200);
+    // createGraph();
+    createRandomGraph(100);
+
+    for (const node of depthFirstIterator(LIST, '0')) {
+      await drawCurrent(node, 100);
     }
-    // await depthFirstLoop(LIST, 'a');
+    // await depthFirstLoop(LIST, '0');
   },
 };
